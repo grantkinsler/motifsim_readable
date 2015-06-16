@@ -60,7 +60,7 @@ def main(argv):
 			usage()
 			sys.exit(2)
 
-	masterprefix = 'TESTMotifSimulation_'
+	masterprefix = 'MotifSimulation_'
 
 	parameterlist = [trials, growthIterations, max_strand_nr, maxStrandLength, numCells, numRounds, repr(motif), elong, elong, bias, basenumber, p_divide]
 
