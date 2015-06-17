@@ -1,0 +1,12 @@
+testprefix example_prefix
+trials 10
+growthIterations 10000
+maxStrands 100
+maxStrandLength 10
+numCells 200
+numRounds 500
+motif 0001
+elong 0.005
+bias 0.85
+basenumber 2
+p_divide 0.1
