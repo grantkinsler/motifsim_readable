@@ -3,6 +3,11 @@ from motifsim_trial import motifsim_trial
 import itertools
 import numpy
 
+def flatten(items, seqtypes=(list, tuple)): # used for flattening lists
+    for i, x in enumerate(items):
+        while isinstance(items[i], seqtypes):
+            items[i:i+1] = items[i]
+    return items
 
 def motifsim_motifoutput(parameterlist,masterprefix,testprefix,trials,growthIterations,max_strand_nr,maxStrandLength,numCells,numRounds,motif,elong,bias,basenumber,p_divide):
 	pop_tracker = []
@@ -34,6 +39,12 @@ def motifsim_motifoutput(parameterlist,masterprefix,testprefix,trials,growthIter
 				strands_freq_aggregate = [list(round_data) for round_data in zip(strands_freq_aggregate,strands_freq)]
 				cells_with_freq_aggregate = [list(round_data) for round_data in zip(cells_with_freq_aggregate,cells_with_freq)]
 				nr_strands_per_time = [list(round_data) for round_data in zip(nr_strands_per_time,nr_strands)]
+		
+		for time_point in range(numRounds):
+			motif_freq_aggregate[time_point] = flatten(motif_freq_aggregate[time_point])
+			strands_freq_aggregate[time_point] = flatten(strands_freq_aggregate[time_point])
+			cells_with_freq_aggregate[time_point] = flatten(cells_with_freq_aggregate[time_point])
+			nr_strands_per_time[time_point] = flatten(nr_strands_per_time[time_point])
 		
 		means = []
 		stdevs = [] 
