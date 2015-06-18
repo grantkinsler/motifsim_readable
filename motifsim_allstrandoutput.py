@@ -21,7 +21,7 @@ def makeKeyorder(maxStrandLength,motif): # create the keyorder for the order of 
 
 	return keyorder
 
-def motifsim_allstrandoutput(parameterlist,masterprefix,testprefix,pop_tracker,nr_strands_per_time,trials,growthIterations,max_strand_nr,maxStrandLength,numCells,numRounds,motif,elong,bias,basenumber,p_divide):
+def motifsim_allstrandoutput(parameterlist,masterprefix,testprefix,pop_tracker,nr_strands_per_time,trials,max_strand_nr,maxStrandLength,numCells,numRounds,motif,elong,bias):
 
 	keyorder = makeKeyorder(maxStrandLength,motif)
 
@@ -65,7 +65,7 @@ def motifsim_allstrandoutput(parameterlist,masterprefix,testprefix,pop_tracker,n
 		stdev_dict.append(collections.OrderedDict(sorted(temp_stdev.items(), key = lambda i:keyorder.index(i[0]))))
 
 
-	with open(masterprefix + testprefix +'_AllStrandData_motif{motif}_len{maxStrandLength}_bias{bias}_elong{elong}_{trials}trials_numRound{numRounds}_bn{basenumber}_div{p_divide}.csv'.format(motif = motif, maxStrandLength = maxStrandLength, bias= bias, elong=elong, trials=trials, numRounds=numRounds, basenumber= basenumber, p_divide=p_divide), 'wb') as f:
+	with open(masterprefix + testprefix +'_AllStrandData_motif{motif}_len{maxStrandLength}_bias{bias}_elong{elong}_{trials}trials_numRound{numRounds}.csv'.format(motif = motif, maxStrandLength = maxStrandLength, bias= bias, elong=elong, trials=trials, numRounds=numRounds), 'wb') as f:
 		parameter_writer = csv.writer(f)
 		dict_writer = csv.DictWriter(f,mean_dict[0].keys())
 		dict_header_writer = csv.DictWriter(f,mean_dict[0].keys(),quotechar="'", quoting=csv.QUOTE_ALL)

@@ -4,7 +4,7 @@ import random as rand
 from copy import deepcopy
 from copy import copy
 
-def motifsim_trial(motif,growthIterations,max_strand_nr,maxStrandLength,numCells,numRounds,elong,bias,basenumber,p_divide):
+def motifsim_trial(motif,max_strand_nr,maxStrandLength,numCells,numRounds,elong,bias):
 
 	population = Population([],'empty','empty','empty')
 
@@ -17,14 +17,13 @@ def motifsim_trial(motif,growthIterations,max_strand_nr,maxStrandLength,numCells
 	population_tracker = []
 
 	for time in range(numRounds):
-		for growth_iter in range(growthIterations):
-			for cell_iterator in range(numCells):
-				population.cells[cell_iterator].grow(elong,bias,maxStrandLength)
-
 		for cell_iterator in range(numCells):
-			if rand.uniform(0,1) < p_divide and population.cells[cell_iterator].nr_bases > basenumber:
-				new_cell = population.cells[cell_iterator].divide()
-				population.cells.append(new_cell)
+			population.cells[cell_iterator].grow(elong,bias,maxStrandLength)
+
+		cell_to_divide = rand.sample(range(numCells),1)[0]
+
+		new_cell = population.cells[cell_to_divide].divide()
+		population.cells.append(new_cell)
 
 		population.cells = rand.sample(population.cells,numCells)
 

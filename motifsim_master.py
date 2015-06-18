@@ -8,7 +8,7 @@ from motifsim_allstrandoutput import motifsim_allstrandoutput
 def usage():
 	print "Running a Motif Simulation using the parameters designated by options\n"
 	print "PARAMETERS:"
-	print "--trials, --growthIterations, --maxStrands, --maxStrandLength, --numCells, --numRounds, --motif, --elong, --bias, --basenumber, --p_divide\n"
+	print "--trials, --maxStrands, --maxStrandLength, --numCells, --numRounds, --motif, --elong, --bias\n"
 	print "Outputs three csv files:\n"
 	print "1. 'MotifData' designates the csv file containing primarily motif data. First row is parameters."
 	print "For each trial, a row of motif frequency per round, a row of freq of total nr_strands used per round, a row of freq_nr_cells_with_motif per round"
@@ -22,7 +22,7 @@ def usage():
 def main(argv):
 
 	try:
-		opts, args = getopt.getopt(argv, "h", ["help","testprefix=","trials=","growthIterations=","maxStrands=","maxStrandLength=","numCells=","numRounds=","motif=","elong=","bias=","basenumber=","p_divide="])
+		opts, args = getopt.getopt(argv, "h", ["help","testprefix=","trials=","maxStrands=","maxStrandLength=","numCells=","numRounds=","motif=","elong=","bias="])
 	except getopt.GetoptError, error:
 		sys.stderr.write(str(error)+"\n")
 		usage()
@@ -35,8 +35,6 @@ def main(argv):
 			testprefix = arg
 		elif opt == "--trials" :
 			trials = int(arg)
-		elif opt == "--growthIterations" :
-			growthIterations = int(arg)
 		elif opt == "--maxStrands" :
 			max_strand_nr = int(arg)
 		elif opt == "--maxStrandLength" :
@@ -51,10 +49,6 @@ def main(argv):
 			elong = float(arg)
 		elif opt == '--bias' :
 			bias = float(arg)
-		elif opt == '--basenumber' :
-			basenumber = int(arg)
-		elif opt == '--p_divide' :
-			p_divide = float(arg)
 		else:
 			sys.stderr.write("Unknown option %s\n" %opt)
 			usage()
@@ -62,13 +56,13 @@ def main(argv):
 
 	masterprefix = 'MotifSimulation_'
 
-	parameterlist = [trials, growthIterations, max_strand_nr, maxStrandLength, numCells, numRounds, repr(motif), elong, elong, bias, basenumber, p_divide]
+	parameterlist = [trials, max_strand_nr, maxStrandLength, numCells, numRounds, repr(motif), elong, bias]
 
-	pop_tracker, nr_strands_per_time = motifsim_motifoutput(parameterlist,masterprefix,testprefix,trials,growthIterations,max_strand_nr,maxStrandLength,numCells,numRounds,motif,elong,bias,basenumber,p_divide)
+	pop_tracker, nr_strands_per_time = motifsim_motifoutput(parameterlist,masterprefix,testprefix,trials,max_strand_nr,maxStrandLength,numCells,numRounds,motif,elong,bias)
 
-	motifsim_fulltrialoutput(parameterlist,masterprefix,testprefix,pop_tracker[0],trials,growthIterations,max_strand_nr,maxStrandLength,numCells,numRounds,motif,elong,bias,basenumber,p_divide)
+	motifsim_fulltrialoutput(parameterlist,masterprefix,testprefix,pop_tracker[0],trials,max_strand_nr,maxStrandLength,numCells,numRounds,motif,elong,bias)
 
-	motifsim_allstrandoutput(parameterlist,masterprefix,testprefix,pop_tracker,nr_strands_per_time,trials,growthIterations,max_strand_nr,maxStrandLength,numCells,numRounds,motif,elong,bias,basenumber,p_divide)
+	motifsim_allstrandoutput(parameterlist,masterprefix,testprefix,pop_tracker,nr_strands_per_time,trials,max_strand_nr,maxStrandLength,numCells,numRounds,motif,elong,bias)
 
 
 if __name__ == "__main__":

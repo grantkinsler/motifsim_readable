@@ -9,17 +9,17 @@ def flatten(items, seqtypes=(list, tuple)): # used for flattening lists
             items[i:i+1] = items[i]
     return items
 
-def motifsim_motifoutput(parameterlist,masterprefix,testprefix,trials,growthIterations,max_strand_nr,maxStrandLength,numCells,numRounds,motif,elong,bias,basenumber,p_divide):
+def motifsim_motifoutput(parameterlist,masterprefix,testprefix,trials,max_strand_nr,maxStrandLength,numCells,numRounds,motif,elong,bias):
 	pop_tracker = []
 
 
-	with open(masterprefix+ testprefix +'_MotifData_motif{motif}_len{maxStrandLength}_bias{bias}_elong{elong}_{trials}trials_numRound{numRounds}_bn{basenumber}_div{p_divide}.csv'.format(motif = motif, maxStrandLength = maxStrandLength, bias=bias, elong=elong, trials=trials, numRounds=numRounds, basenumber= basenumber, p_divide=p_divide), 'wb') as f: 
+	with open(masterprefix+ testprefix +'_MotifData_motif{motif}_len{maxStrandLength}_bias{bias}_elong{elong}_{trials}trials_numRound{numRounds}.csv'.format(motif = motif, maxStrandLength = maxStrandLength, bias=bias, elong=elong, trials=trials, numRounds=numRounds), 'wb') as f: 
 		writer = csv.writer(f)
 		writer.writerow(parameterlist)
 
 		for trial in range(trials):
 			pop_tracker.append([])
-			nr_motifs, nr_strands, nr_cells_with_motif, pop_tracker[trial] = motifsim_trial(motif,growthIterations,max_strand_nr,maxStrandLength,numCells,numRounds,elong,bias,basenumber,p_divide)
+			nr_motifs, nr_strands, nr_cells_with_motif, pop_tracker[trial] = motifsim_trial(motif,max_strand_nr,maxStrandLength,numCells,numRounds,elong,bias)
 
 			motif_freq = [motifs / float(total) for motifs,total in itertools.izip(nr_motifs,nr_strands)]
 			strands_freq = [strands / float(max_strand_nr*numCells) for strands in nr_strands]

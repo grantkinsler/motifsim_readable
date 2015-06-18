@@ -1,9 +1,9 @@
 
 import csv
 
-def motifsim_fulltrialoutput(parameterlist,masterprefix,testprefix,trial_data,trials,growthIterations,max_strand_nr,maxStrandLength,numCells,numRounds,motif,elong,bias,basenumber,p_divide):
+def motifsim_fulltrialoutput(parameterlist,masterprefix,testprefix,trial_data,trials,max_strand_nr,maxStrandLength,numCells,numRounds,motif,elong,bias):
 
-	with open(masterprefix + testprefix +'_FullTrial1Data_motif{motif}_len{maxStrandLength}_bias{bias}_elong{elong}_{trials}trials_numRound{numRounds}_bn{basenumber}_div{p_divide}.csv'.format(motif = motif, maxStrandLength = maxStrandLength, bias= bias, elong=elong, trials=trials, numRounds=numRounds, basenumber= basenumber, p_divide=p_divide), 'wb') as f:
+	with open(masterprefix + testprefix +'_FullTrial1Data_motif{motif}_len{maxStrandLength}_bias{bias}_elong{elong}_{trials}trials_numRound{numRounds}.csv'.format(motif = motif, maxStrandLength = maxStrandLength, bias= bias, elong=elong, trials=trials, numRounds=numRounds), 'wb') as f:
 
 		strand_writer = csv.writer(f, quotechar="'", quoting=csv.QUOTE_ALL) # making sure we put quotes around our strings so they're not read as numbers
 		parameter_writer = csv.writer(f) # we don't need the quotes for the parameter list
