@@ -1,7 +1,7 @@
 
 import csv
 
-def motifsim_fulltrialoutput(parameterlist,masterprefix,testprefix,trial_data,trials,max_strand_nr,maxStrandLength,numCells,numRounds,motif,elong,bias):
+def motifsim_fulltrialoutput(parameterlist,masterprefix,testprefix,trial_population_data,trial_elongation_data,trials,max_strand_nr,maxStrandLength,numCells,numRounds,motif,elong,bias):
 
 	with open(masterprefix + testprefix +'_FullTrial1Data_motif{motif}_len{maxStrandLength}_bias{bias}_elong{elong}_{trials}trials_numRound{numRounds}.csv'.format(motif = motif, maxStrandLength = maxStrandLength, bias= bias, elong=elong, trials=trials, numRounds=numRounds), 'wb') as f:
 
@@ -12,6 +12,7 @@ def motifsim_fulltrialoutput(parameterlist,masterprefix,testprefix,trial_data,tr
 
 		for time_point in range(numRounds):
 			for cell in range(numCells):
-				strand_writer.writerow(trial_data[time_point][cell])
+				strand_writer.writerow(trial_population_data[time_point][cell])
+				strand_writer.writerow(trial_elongation_data[time_point][cell])
 
 	f.close()

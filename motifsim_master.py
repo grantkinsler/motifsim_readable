@@ -4,6 +4,7 @@ import getopt
 from motifsim_motifoutput import motifsim_motifoutput
 from motifsim_fulltrialoutput import motifsim_fulltrialoutput
 from motifsim_allstrandoutput import motifsim_allstrandoutput
+from motifsim_elongdataoutput import motifsim_elongdataoutput
 
 def usage():
 	print "Running a Motif Simulation using the parameters designated by options\n"
@@ -58,11 +59,13 @@ def main(argv):
 
 	parameterlist = [trials, max_strand_nr, maxStrandLength, numCells, numRounds, repr(motif), elong, bias]
 
-	pop_tracker, nr_strands_per_time = motifsim_motifoutput(parameterlist,masterprefix,testprefix,trials,max_strand_nr,maxStrandLength,numCells,numRounds,motif,elong,bias)
+	pop_tracker, nr_strands_per_time, elongation_tracker = motifsim_motifoutput(parameterlist,masterprefix,testprefix,trials,max_strand_nr,maxStrandLength,numCells,numRounds,motif,elong,bias)
 
-	motifsim_fulltrialoutput(parameterlist,masterprefix,testprefix,pop_tracker[0],trials,max_strand_nr,maxStrandLength,numCells,numRounds,motif,elong,bias)
+	motifsim_fulltrialoutput(parameterlist,masterprefix,testprefix,pop_tracker[0],elongation_tracker[0],trials,max_strand_nr,maxStrandLength,numCells,numRounds,motif,elong,bias)
 
-	motifsim_allstrandoutput(parameterlist,masterprefix,testprefix,pop_tracker,nr_strands_per_time,trials,max_strand_nr,maxStrandLength,numCells,numRounds,motif,elong,bias)
+	strand_number_dict = motifsim_allstrandoutput(parameterlist,masterprefix,testprefix,pop_tracker,nr_strands_per_time,trials,max_strand_nr,maxStrandLength,numCells,numRounds,motif,elong,bias)
+
+	motifsim_elongdataoutput(parameterlist,masterprefix,testprefix,pop_tracker,nr_strands_per_time,elongation_tracker,strand_number_dict,trials,max_strand_nr,maxStrandLength,numCells,numRounds,motif,elong,bias)
 
 
 if __name__ == "__main__":

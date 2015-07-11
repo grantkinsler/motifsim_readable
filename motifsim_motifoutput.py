@@ -11,7 +11,7 @@ def flatten(items, seqtypes=(list, tuple)): # used for flattening lists
 
 def motifsim_motifoutput(parameterlist,masterprefix,testprefix,trials,max_strand_nr,maxStrandLength,numCells,numRounds,motif,elong,bias):
 	pop_tracker = []
-
+	elongation_tracker = []
 
 	with open(masterprefix+ testprefix +'_MotifData_motif{motif}_len{maxStrandLength}_bias{bias}_elong{elong}_{trials}trials_numRound{numRounds}.csv'.format(motif = motif, maxStrandLength = maxStrandLength, bias=bias, elong=elong, trials=trials, numRounds=numRounds), 'wb') as f: 
 		writer = csv.writer(f)
@@ -19,7 +19,8 @@ def motifsim_motifoutput(parameterlist,masterprefix,testprefix,trials,max_strand
 
 		for trial in range(trials):
 			pop_tracker.append([])
-			nr_motifs, nr_strands, nr_cells_with_motif, pop_tracker[trial] = motifsim_trial(motif,max_strand_nr,maxStrandLength,numCells,numRounds,elong,bias)
+			elongation_tracker.append([])
+			nr_motifs, nr_strands, nr_cells_with_motif, pop_tracker[trial], elongation_tracker[trial]  = motifsim_trial(motif,max_strand_nr,maxStrandLength,numCells,numRounds,elong,bias)
 
 			motif_freq = [motifs / float(total) for motifs,total in itertools.izip(nr_motifs,nr_strands)]
 			strands_freq = [strands / float(max_strand_nr*numCells) for strands in nr_strands]
@@ -55,11 +56,11 @@ def motifsim_motifoutput(parameterlist,masterprefix,testprefix,trials,max_strand
 
 		for time_point in range(numRounds):
 			means[0].append(numpy.mean(motif_freq_aggregate[time_point]))
-			stdevs[0].append(numpy.std(motif_freq_aggregate[time_point]))
+			stdevs[0].append(numpy.std(motif_freq_aggregate[time_point],dtype=numpy.float64))
 			means[1].append(numpy.mean(strands_freq_aggregate[time_point]))
-			stdevs[1].append(numpy.std(strands_freq_aggregate[time_point]))
+			stdevs[1].append(numpy.std(strands_freq_aggregate[time_point],dtype=numpy.float64))
 			means[2].append(numpy.mean(cells_with_freq_aggregate[time_point]))
-			stdevs[2].append(numpy.std(cells_with_freq_aggregate[time_point]))
+			stdevs[2].append(numpy.std(cells_with_freq_aggregate[time_point],dtype=numpy.float64))
 
 		for mean_data in means:
 			writer.writerow(mean_data)
@@ -68,4 +69,4 @@ def motifsim_motifoutput(parameterlist,masterprefix,testprefix,trials,max_strand
 			writer.writerow(stdev_data)
 	f.close()
 
-	return pop_tracker, nr_strands_per_time
+	return pop_tracker, nr_strands_per_time, elongation_tracker

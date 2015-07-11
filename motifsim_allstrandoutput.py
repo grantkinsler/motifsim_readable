@@ -60,7 +60,7 @@ def motifsim_allstrandoutput(parameterlist,masterprefix,testprefix,pop_tracker,n
 		temp_stdev = {}
 		for key in keyorder:
 			temp_mean[key] = numpy.mean(dict_per_time[time_point][key])
-			temp_stdev[key] = numpy.std(dict_per_time[time_point][key])
+			temp_stdev[key] = numpy.std(dict_per_time[time_point][key],dtype=numpy.float64)
 		mean_dict.append(collections.OrderedDict(sorted(temp_mean.items(), key = lambda i:keyorder.index(i[0]))))
 		stdev_dict.append(collections.OrderedDict(sorted(temp_stdev.items(), key = lambda i:keyorder.index(i[0]))))
 
@@ -79,3 +79,5 @@ def motifsim_allstrandoutput(parameterlist,masterprefix,testprefix,pop_tracker,n
 			dict_writer.writerow(stdev_dict[time_point])
 
 	f.close()
+
+	return time_trial_dict

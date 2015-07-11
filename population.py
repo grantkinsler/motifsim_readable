@@ -10,7 +10,7 @@ class Population:
 
 	def populate(self,numCells,motif,max_strand_nr):
 		for cell_iterator in range(numCells):
-			self.cells.append(Cell([],motif,max_strand_nr,'empty','empty','empty'))
+			self.cells.append(Cell([],[],motif,max_strand_nr,'empty','empty','empty'))
 
 	def update_counters(self):
 		self.nr_motifs = self.count_motifs()
@@ -40,8 +40,10 @@ class Population:
 
 	def returncontents(self):
 		contents = []
+		elong_contents = []
 
 		for cell in self.cells:
 			contents.append(cell.strands)
+			elong_contents.append(cell.elongations)
 
-		return contents
+		return contents, elong_contents

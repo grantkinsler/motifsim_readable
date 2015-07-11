@@ -15,6 +15,7 @@ def motifsim_trial(motif,max_strand_nr,maxStrandLength,numCells,numRounds,elong,
 	nr_strands_used = []
 	nr_cells_with_motif = []
 	population_tracker = []
+	elongation_tracker = []
 
 	for time in range(numRounds):
 		for cell_iterator in range(numCells):
@@ -32,6 +33,8 @@ def motifsim_trial(motif,max_strand_nr,maxStrandLength,numCells,numRounds,elong,
 		nr_motifs.append(copy(population.nr_motifs))
 		nr_strands_used.append(copy(population.nr_strands))
 		nr_cells_with_motif.append(copy(population.nr_cells_with_motif))
-		population_tracker.append(deepcopy(population.returncontents()))
+		population_tracker_temp, elongation_tracker_temp = population.returncontents()
+		population_tracker.append(deepcopy(population_tracker_temp))
+		elongation_tracker.append(deepcopy(elongation_tracker_temp))
 
-	return nr_motifs, nr_strands_used, nr_cells_with_motif, population_tracker
+	return nr_motifs, nr_strands_used, nr_cells_with_motif, population_tracker, elongation_tracker
