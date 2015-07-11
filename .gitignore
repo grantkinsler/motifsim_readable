@@ -58,3 +58,5 @@ target/
 
 # Output files
 *.csv
+
+.DS_Store
