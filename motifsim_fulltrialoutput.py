@@ -10,8 +10,8 @@ def motifsim_fulltrialoutput(parameterlist,masterprefix,testprefix,trial_populat
 
 		parameter_writer.writerow(parameterlist)
 
-		for time_point in range(numRounds):
-			for cell in range(numCells):
+		for time_point in xrange(numRounds):
+			for cell in xrange(numCells):
 				strand_writer.writerow(trial_population_data[time_point][cell])
 				strand_writer.writerow(trial_elongation_data[time_point][cell])
 

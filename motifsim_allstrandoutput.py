@@ -4,32 +4,47 @@ import collections
 import numpy
 import itertools
 
-def makeKeyorder(maxStrandLength,motif): # create the keyorder for the order of our dictionary
+def makeKeyorder(maxstrandlen): # create the keyorder for the order of our dictionary
 	
 	keyorder = []
 
-	motifcounter = 0
+	# for n in range(maxStrandLength): # create order of keys for the ordered dictionary
+	# 	for key in itertools.product(range(2),repeat = n+1):
+	# 		mod_key = str(key).strip(" ,(),','").replace(", ", "")
+	# 		if motif in mod_key:
+	# 			keyorder.insert(motifcounter,mod_key) # place all motif strands first in the order
+	# 			motifcounter = motifcounter + 1
+	# 		else:
+	# 			keyorder.append(mod_key) # place the rest in the order they are created
 
-	for n in range(maxStrandLength): # create order of keys for the ordered dictionary
+	for n in xrange(maxstrandlen): # create order of keys for the ordered dictionary
 		for key in itertools.product(range(2),repeat = n+1):
 			mod_key = str(key).strip(" ,(),','").replace(", ", "")
-			if motif in mod_key:
-				keyorder.insert(motifcounter,mod_key) # place all motif strands first in the order
-				motifcounter = motifcounter + 1
+			if len(keyorder) > 0:
+				if len(mod_key) == len(keyorder[-1]):
+					for keys_so_far in xrange(len(keyorder)):
+						if len(mod_key) == len(keyorder[keys_so_far]):
+							if mod_key.count('1') < keyorder[keys_so_far].count('1'):
+								keyorder.insert(keys_so_far,mod_key)
+								break
+					else:
+						keyorder.append(mod_key)
+				else:
+					keyorder.append(mod_key)
 			else:
-				keyorder.append(mod_key) # place the rest in the order they are created
+				keyorder.append(mod_key)
 
 	return keyorder
 
 def motifsim_allstrandoutput(parameterlist,masterprefix,testprefix,pop_tracker,nr_strands_per_time,trials,max_strand_nr,maxStrandLength,numCells,numRounds,motif,elong,bias):
 
-	keyorder = makeKeyorder(maxStrandLength,motif)
+	keyorder = makeKeyorder(maxStrandLength)
 
 	time_trial_dict = []
 	dict_per_time = []
-	for trial in range(trials):
+	for trial in xrange(trials):
 		time_trial_dict.append([])
-		for time_point in range(numRounds):
+		for time_point in xrange(numRounds):
 			temp_dict = {}
 			if trial == 0:
 				temp2_dict = {}
@@ -41,21 +56,21 @@ def motifsim_allstrandoutput(parameterlist,masterprefix,testprefix,pop_tracker,n
 				dict_per_time.append(collections.OrderedDict(sorted(temp2_dict.items(), key = lambda i:keyorder.index(i[0]))))
 			time_trial_dict[trial].append(collections.OrderedDict(sorted(temp_dict.items(), key = lambda i:keyorder.index(i[0]))))
 
-	for trial in range(trials):
-		for time_point in range(numRounds):
-			for cell in range(len(pop_tracker[trial][time_point])):
+	for trial in xrange(trials):
+		for time_point in xrange(numRounds):
+			for cell in xrange(len(pop_tracker[trial][time_point])):
 				for strand in pop_tracker[trial][time_point][cell]:
 					time_trial_dict[trial][time_point][strand] = time_trial_dict[trial][time_point][strand] + 1
 
-	for trial in range(trials):
-		for time_point in range(numRounds):
+	for trial in xrange(trials):
+		for time_point in xrange(numRounds):
 			for key, value in time_trial_dict[trial][time_point].iteritems():
 				dict_per_time[time_point][key].append(int(value)/float(nr_strands_per_time[time_point][trial]))
 
 	stdev_dict = [] 
 	mean_dict = []
 
-	for time_point in range(numRounds):
+	for time_point in xrange(numRounds):
 		temp_mean = {}
 		temp_stdev = {}
 		for key in keyorder:
@@ -73,11 +88,11 @@ def motifsim_allstrandoutput(parameterlist,masterprefix,testprefix,pop_tracker,n
 		parameter_writer.writerow(parameterlist)
 
 		dict_header_writer.writeheader()
-		for time_point in range(numRounds):
+		for time_point in xrange(numRounds):
 			dict_writer.writerow(mean_dict[time_point])
-		for time_point in range(numRounds):
+		for time_point in xrange(numRounds):
 			dict_writer.writerow(stdev_dict[time_point])
 
 	f.close()
 
-	return time_trial_dict
+	return time_trial_dict, keyorder

@@ -17,8 +17,8 @@ def motifsim_trial(motif,max_strand_nr,maxStrandLength,numCells,numRounds,elong,
 	population_tracker = []
 	elongation_tracker = []
 
-	for time in range(numRounds):
-		for cell_iterator in range(numCells):
+	for time in xrange(numRounds):
+		for cell_iterator in xrange(numCells):
 			population.cells[cell_iterator].grow(elong,bias,maxStrandLength)
 
 		cell_to_divide = rand.sample(range(numCells),1)[0]

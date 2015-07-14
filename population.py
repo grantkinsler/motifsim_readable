@@ -9,7 +9,7 @@ class Population:
 		self.nr_cells_with_motif = self.count_cells_with_motif()
 
 	def populate(self,numCells,motif,max_strand_nr):
-		for cell_iterator in range(numCells):
+		for cell_iterator in xrange(numCells):
 			self.cells.append(Cell([],[],motif,max_strand_nr,'empty','empty','empty'))
 
 	def update_counters(self):

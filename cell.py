@@ -20,7 +20,7 @@ class Cell:
 
 	def motif_count(self):
 		motif_count = 0
-		for strand_iterator in range(self.nr_strands()):
+		for strand_iterator in xrange(self.nr_strands()):
 			if str(self.motif) in self.strands[strand_iterator]:
 				motif_count += 1
 		return motif_count
@@ -46,7 +46,7 @@ class Cell:
 		return strand_counter
 
 	def grow(self,elong,bias,maxStrandLength):
-		for strand_iterator in range(self.nr_strands()): 
+		for strand_iterator in xrange(self.nr_strands()): 
 			if rand.uniform(0,1) < elong and len(self.strands[strand_iterator]) < maxStrandLength:
 				if self.has_motif == True:
 					if rand.uniform(0,1) < bias:
@@ -63,7 +63,7 @@ class Cell:
 						self.strands[strand_iterator] = self.strands[strand_iterator] + "1"
 						self.elongations[strand_iterator] = self.elongations[strand_iterator] + "-"
 
-		for empty_iterator in range(self.max_strand_nr-self.nr_strands()):
+		for empty_iterator in xrange(self.max_strand_nr-self.nr_strands()):
 			if rand.uniform(0,1) < elong:
 				if self.has_motif == True:
 					if rand.uniform(0,1) < bias:
@@ -86,7 +86,7 @@ class Cell:
 	def divide(self):
 		new_cell = Cell([],[],self.motif,self.max_strand_nr,'empty','empty','empty')
 		strand_counter = 0
-		for strand_number in range(self.nr_strands()):
+		for strand_number in xrange(self.nr_strands()):
 			if rand.uniform(0,1) < 0.5:
 				new_cell.strands.append(self.strands.pop(strand_counter)) # this strand is removed from cell and added to new cell
 				new_cell.elongations.append(self.elongations.pop(strand_counter))
@@ -99,9 +99,6 @@ class Cell:
 		self.update_nr_bases()
 
 		return new_cell
-
-
-
 
 
 
