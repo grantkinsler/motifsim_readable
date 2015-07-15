@@ -40,40 +40,27 @@ def motifsim_elongdataoutput(keyorder,parameterlist,masterprefix,testprefix,pop_
 	for key in keyorder:
 		elongkeyorder.append(copy(key.replace("0","-").replace("1","+")))
 
-	time_trial_dict = []
 	dict_per_time = []
-	for trial in xrange(trials):
-		time_trial_dict.append([])
-		for time_point in xrange(numRounds):
-			temp_dict = {}
-			if trial == 0:
-				temp2_dict = {}
-			for key in keyorder:
-				temp_dict[key] = {}
-				if trial == 0:
-					temp2_dict[key] = {}
-				for elongkey in elongkeyorder:
-					temp_dict[key][elongkey] = 0
-					if trial == 0:
-						temp2_dict[key][elongkey] = []
-				temp_dict[key] = collections.OrderedDict(sorted(temp_dict[key].items(), key = lambda i:elongkeyorder.index(i[0])))
-				if trial == 0:
-					temp2_dict[key] = collections.OrderedDict(sorted(temp2_dict[key].items(), key = lambda i:elongkeyorder.index(i[0])))
-			if trial == 0:
-				dict_per_time.append(collections.OrderedDict(sorted(temp2_dict.items(), key = lambda i:keyorder.index(i[0]))))
-			time_trial_dict[trial].append(collections.OrderedDict(sorted(temp_dict.items(), key = lambda i:keyorder.index(i[0]))))
-			
+	
+	for time_point in xrange(numRounds):
+		temp2_dict = {}
+		for key in keyorder:
+			temp2_dict[key] = {}
+			for elongkey in elongkeyorder:
+				temp2_dict[key][elongkey] = [0 for trial in xrange(trials)]
+			temp2_dict[key] = collections.OrderedDict(sorted(temp2_dict[key].items(), key = lambda i:elongkeyorder.index(i[0])))
+		dict_per_time.append(collections.OrderedDict(sorted(temp2_dict.items(), key = lambda i:keyorder.index(i[0]))))
 
+		for trial in xrange(trials):
 			for cell in xrange(len(pop_tracker[trial][time_point])):
 				for strand in xrange(len(pop_tracker[trial][time_point][cell])):
-					time_trial_dict[trial][time_point][pop_tracker[trial][time_point][cell][strand]][elongation_tracker[trial][time_point][cell][strand]] = time_trial_dict[trial][time_point][pop_tracker[trial][time_point][cell][strand]][elongation_tracker[trial][time_point][cell][strand]] + 1
-
+					dict_per_time[time_point][pop_tracker[trial][time_point][cell][strand]][elongation_tracker[trial][time_point][cell][strand]][trial] += 1
 			for key in keyorder:
-				for elongkey, value in time_trial_dict[trial][time_point][key].iteritems():
+				for elongkey in elongkeyorder:
 					if float(strand_number_dict[trial][time_point][key]) > 0:
-						dict_per_time[time_point][key][elongkey].append(int(value)/float(strand_number_dict[trial][time_point][key]))
+						dict_per_time[time_point][key][elongkey][trial] = int(dict_per_time[time_point][key][elongkey][trial])/float(strand_number_dict[trial][time_point][key])
 					else:
-						dict_per_time[time_point][key][elongkey].append(int(value))
+						dict_per_time[time_point][key][elongkey][trial] = int(dict_per_time[time_point][key][elongkey][trial])
 
 	with open(masterprefix + testprefix +'_ElongData_motif{motif}_len{maxStrandLength}_bias{bias}_elong{elong}_{trials}trials_numRound{numRounds}.csv'.format(motif = motif, maxStrandLength = maxStrandLength, bias= bias, elong=elong, trials=trials, numRounds=numRounds), 'wb') as f:
 		parameter_writer = csv.writer(f)
