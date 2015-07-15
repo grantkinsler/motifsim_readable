@@ -9,7 +9,7 @@ from motifsim_elongdataoutput import motifsim_elongdataoutput
 def usage():
 	print "Running a Motif Simulation using the parameters designated by options\n"
 	print "PARAMETERS:"
-	print "--trials, --maxStrands, --maxStrandLength, --numCells, --numRounds, --motif, --elong, --bias\n"
+	print "--trials, --maxStrands, --maxStrandLength, --numCells, --numRounds, --motif, --elong, --bias, --elongdata\n"
 	print "Outputs three csv files:\n"
 	print "1. 'MotifData' designates the csv file containing primarily motif data. First row is parameters."
 	print "For each trial, a row of motif frequency per round, a row of freq of total nr_strands used per round, a row of freq_nr_cells_with_motif per round"
@@ -24,7 +24,7 @@ def usage():
 def main(argv):
 
 	try:
-		opts, args = getopt.getopt(argv, "h", ["help","testprefix=","trials=","maxStrands=","maxStrandLength=","numCells=","numRounds=","motif=","elong=","bias="])
+		opts, args = getopt.getopt(argv, "h", ["help","testprefix=","trials=","maxStrands=","maxStrandLength=","numCells=","numRounds=","motif=","elong=","bias=","elongdata="])
 	except getopt.GetoptError, error:
 		sys.stderr.write(str(error)+"\n")
 		usage()
@@ -51,6 +51,8 @@ def main(argv):
 			elong = float(arg)
 		elif opt == '--bias' :
 			bias = float(arg)
+		elif opt == '--elongdata' :
+			elongdata = arg
 		else:
 			sys.stderr.write("Unknown option %s\n" %opt)
 			usage()
@@ -66,7 +68,13 @@ def main(argv):
 
 	strand_number_dict, keyorder = motifsim_allstrandoutput(parameterlist,masterprefix,testprefix,pop_tracker,nr_strands_per_time,trials,max_strand_nr,maxStrandLength,numCells,numRounds,motif,elong,bias)
 
-	motifsim_elongdataoutput(keyorder,parameterlist,masterprefix,testprefix,pop_tracker,nr_strands_per_time,elongation_tracker,strand_number_dict,trials,max_strand_nr,maxStrandLength,numCells,numRounds,motif,elong,bias)
+	try:
+		elongdata
+	except:
+		elongdata =  'False'
+
+	if elongdata == 'True':
+		motifsim_elongdataoutput(keyorder,parameterlist,masterprefix,testprefix,pop_tracker,nr_strands_per_time,elongation_tracker,strand_number_dict,trials,max_strand_nr,maxStrandLength,numCells,numRounds,motif,elong,bias)
 
 
 if __name__ == "__main__":
