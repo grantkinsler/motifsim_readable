@@ -62,8 +62,6 @@ def motifsim_allstrandoutput(parameterlist,masterprefix,testprefix,pop_tracker,n
 				for strand in pop_tracker[trial][time_point][cell]:
 					time_trial_dict[trial][time_point][strand] = time_trial_dict[trial][time_point][strand] + 1
 
-	for trial in xrange(trials):
-		for time_point in xrange(numRounds):
 			for key, value in time_trial_dict[trial][time_point].iteritems():
 				dict_per_time[time_point][key].append(int(value)/float(nr_strands_per_time[time_point][trial]))
 
