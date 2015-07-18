@@ -41,24 +41,22 @@ def motifsim_elongdataoutput(keyorder,parameterlist,masterprefix,testprefix,pop_
 		elongkeyorder.append(copy(key.replace("0","-").replace("1","+")))
 
 	dict_per_time = []
-	
+
 	for time_point in xrange(numRounds):
-		temp2_dict = {}
-		for key in keyorder:
-			temp2_dict[key] = {}
-			for elongkey in elongkeyorder:
-				temp2_dict[key][elongkey] = [0 for trial in xrange(trials)]
-			temp2_dict[key] = collections.OrderedDict(sorted(temp2_dict[key].items(), key = lambda i:elongkeyorder.index(i[0])))
-		dict_per_time.append(collections.OrderedDict(sorted(temp2_dict.items(), key = lambda i:keyorder.index(i[0]))))
+		dict_per_time.append([])
+		for key in xrange(len(keyorder)):
+			dict_per_time[time_point].append([])
+			for elongkey in xrange(len(elongkeyorder)):
+				dict_per_time[time_point][key].append([0 for trial in xrange(trials)])
 
 		for trial in xrange(trials):
 			for cell in xrange(len(pop_tracker[trial][time_point])):
 				for strand in xrange(len(pop_tracker[trial][time_point][cell])):
-					dict_per_time[time_point][pop_tracker[trial][time_point][cell][strand]][elongation_tracker[trial][time_point][cell][strand]][trial] += 1
-			for key in keyorder:
-				for elongkey in elongkeyorder:
-					if float(strand_number_dict[trial][time_point][key]) > 0:
-						dict_per_time[time_point][key][elongkey][trial] = int(dict_per_time[time_point][key][elongkey][trial])/float(strand_number_dict[trial][time_point][key])
+					dict_per_time[time_point][keyorder.index(pop_tracker[trial][time_point][cell][strand])][elongkeyorder.index(elongation_tracker[trial][time_point][cell][strand])][trial] += 1
+			for key in xrange(len(keyorder)):
+				for elongkey in xrange(len(elongkeyorder)):
+					if float(strand_number_dict[trial][time_point][keyorder[key]]) > 0:
+						dict_per_time[time_point][key][elongkey][trial] = int(dict_per_time[time_point][key][elongkey][trial])/float(strand_number_dict[trial][time_point][keyorder[key]])
 					else:
 						dict_per_time[time_point][key][elongkey][trial] = int(dict_per_time[time_point][key][elongkey][trial])
 
@@ -71,15 +69,15 @@ def motifsim_elongdataoutput(keyorder,parameterlist,masterprefix,testprefix,pop_
 		strand_writer.writerow(keyorder)
 
 		for time_point in xrange(numRounds):
-			for elongkey in elongkeyorder:
+			for elongkey in xrange(len(elongkeyorder)):
 				time_elong_list = []
-				for key in keyorder:
+				for key in xrange(len(keyorder)):
 					time_elong_list.append(numpy.mean(dict_per_time[time_point][key][elongkey]))
 				parameter_writer.writerow(time_elong_list)
 		for time_point in xrange(numRounds):
-			for elongkey in elongkeyorder:
+			for elongkey in xrange(len(elongkeyorder)):
 				time_elong_list = []
-				for key in keyorder:
+				for key in xrange(len(keyorder)):
 					time_elong_list.append(numpy.std(dict_per_time[time_point][key][elongkey],dtype=numpy.float64))
 				parameter_writer.writerow(time_elong_list)
 
