@@ -62,10 +62,13 @@ def main(argv):
 
 	parameterlist = [trials, max_strand_nr, maxStrandLength, numCells, numRounds, repr(motif), elong, bias]
 
+	# run the trials and output frequency information
 	pop_tracker, nr_strands_per_time, elongation_tracker = motifsim_motifoutput(parameterlist,masterprefix,testprefix,trials,max_strand_nr,maxStrandLength,numCells,numRounds,motif,elong,bias)
 
+	# output full data (all of the cells and strands) for the first trial
 	motifsim_fulltrialoutput(parameterlist,masterprefix,testprefix,pop_tracker[0],elongation_tracker[0],trials,max_strand_nr,maxStrandLength,numCells,numRounds,motif,elong,bias)
 
+	# output strand frequency data
 	strand_number_dict, keyorder = motifsim_allstrandoutput(parameterlist,masterprefix,testprefix,pop_tracker,nr_strands_per_time,trials,max_strand_nr,maxStrandLength,numCells,numRounds,motif,elong,bias)
 
 	try:
@@ -74,6 +77,7 @@ def main(argv):
 		elongdata =  'False'
 
 	if elongdata == 'True':
+		# output elongation pattern data
 		motifsim_elongdataoutput(keyorder,parameterlist,masterprefix,testprefix,pop_tracker,nr_strands_per_time,elongation_tracker,strand_number_dict,trials,max_strand_nr,maxStrandLength,numCells,numRounds,motif,elong,bias)
 
 
