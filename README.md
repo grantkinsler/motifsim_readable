@@ -6,7 +6,7 @@ Last Update: 08/05/2016
 motifsim_master.py is the master file of the simulation. Options used to indicate the parameters used in the run.
 
 Example run:
-python motifsim_master.py --test_prefix=Test --trials=5 --maxStrands=100 --maxStrandLength=7 --numCells=100 --numRounds=100 --motif=10000 --elong=0.05 --bias=0.8
+python motifsim_master.py --testprefix=Test --trials=5 --maxStrands=100 --maxStrandLength=7 --numCells=100 --numRounds=100 --motif=10000 --elong=0.05 --bias=0.8 (--elongdata=False)
 
 Use --help option for more information on parameter options.
 List of other necessary files:
